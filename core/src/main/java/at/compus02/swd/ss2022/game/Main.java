@@ -1,18 +1,20 @@
 package at.compus02.swd.ss2022.game;
 
+import at.compus02.swd.ss2022.game.factory.TileFactory;
+import at.compus02.swd.ss2022.game.gameobjects.Dog;
 import at.compus02.swd.ss2022.game.gameobjects.GameObject;
-import at.compus02.swd.ss2022.game.gameobjects.Sign;
+import at.compus02.swd.ss2022.game.gameobjects.Water;
 import at.compus02.swd.ss2022.game.input.GameInput;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+
+
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
@@ -28,10 +30,24 @@ public class Main extends ApplicationAdapter {
 	private float deltaAccumulator = 0;
 	private BitmapFont font;
 
+
+
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		gameObjects.add(new Sign());
+		TileFactory tileFactory = new TileFactory();
+
+		tileFactory.setBackground(gameObjects, "gras");
+		for (int i = 0; i < 16; i++) {
+			tileFactory.drawOneElement(gameObjects, new Water(), 3, i);
+		}
+
+		Dog bingo = new Dog();
+		gameObjects.add(bingo);
+		gameInput.getDog(bingo);
+		gameInput.run();
+
+
 		font = new BitmapFont();
 		font.setColor(Color.WHITE);
 		Gdx.input.setInputProcessor(this.gameInput);
