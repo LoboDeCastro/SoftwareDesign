@@ -5,6 +5,7 @@ import at.compus02.swd.ss2022.game.gameobjects.Dog;
 import at.compus02.swd.ss2022.game.gameobjects.GameObject;
 import at.compus02.swd.ss2022.game.gameobjects.Water;
 import at.compus02.swd.ss2022.game.input.GameInput;
+import at.compus02.swd.ss2022.game.observer.MovementObserver;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -43,9 +44,13 @@ public class Main extends ApplicationAdapter {
 		}
 
 		Dog bingo = new Dog();
+		MovementObserver cgo = new MovementObserver(gameInput);
+
 		gameObjects.add(bingo);
 		gameInput.getDog(bingo);
+		gameInput.registerObserver(cgo);
 		gameInput.run();
+
 
 
 		font = new BitmapFont();
