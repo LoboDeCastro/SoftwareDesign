@@ -1,11 +1,15 @@
 package at.compus02.swd.ss2022.game;
 
+import at.compus02.swd.ss2022.game.behavior.RightLeftBehavior;
+import at.compus02.swd.ss2022.game.behavior.UpDownBehavior;
+import at.compus02.swd.ss2022.game.factory.PlayerFactory;
 import at.compus02.swd.ss2022.game.factory.TileFactory;
 import at.compus02.swd.ss2022.game.gameobjects.Dog;
+import at.compus02.swd.ss2022.game.gameobjects.Flea;
 import at.compus02.swd.ss2022.game.gameobjects.GameObject;
 import at.compus02.swd.ss2022.game.gameobjects.Water;
 import at.compus02.swd.ss2022.game.input.GameInput;
-import at.compus02.swd.ss2022.game.observer.MovementObserver;
+import at.compus02.swd.ss2022.game.observer.PositionObserver;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -26,7 +30,7 @@ public class Main extends ApplicationAdapter {
 
 	private Array<GameObject> gameObjects = new Array<>();
 
-	private final float updatesPerSecond = 60;
+	private final float updatesPerSecond = 4; // original value == 60
 	private final float logicFrameTime = 1 / updatesPerSecond;
 	private float deltaAccumulator = 0;
 	private BitmapFont font;
@@ -37,6 +41,7 @@ public class Main extends ApplicationAdapter {
 	public void create() {
 		batch = new SpriteBatch();
 		TileFactory tileFactory = new TileFactory();
+		PlayerFactory playerFactory = new PlayerFactory();
 
 		tileFactory.setBackground(gameObjects, "gras");
 		for (int i = 0; i < 16; i++) {
@@ -44,14 +49,23 @@ public class Main extends ApplicationAdapter {
 		}
 
 		Dog bingo = new Dog();
-		MovementObserver cgo = new MovementObserver(gameInput);
+		PositionObserver dogObserver = new PositionObserver();
 
+		gameInput.takeGameObjects(gameObjects);
 		gameObjects.add(bingo);
-		gameInput.getDog(bingo);
-		gameInput.registerObserver(cgo);
+		gameInput.takeDog(bingo);
+		gameInput.registerObserver(dogObserver);
 		gameInput.run();
 
+		Flea flea1 = new Flea();
+		playerFactory.drawOneElement(gameObjects, flea1, 5, 7);
+		flea1.setBehavior(new UpDownBehavior(dogObserver));
+		gameInput.takeFlea(flea1);
 
+		Flea flea2 = new Flea();
+		playerFactory.drawOneElement(gameObjects, flea2, 10, 10);
+		flea2.setBehavior(new RightLeftBehavior(dogObserver));
+		gameInput.takeFlea(flea2);
 
 		font = new BitmapFont();
 		font.setColor(Color.WHITE);
@@ -70,7 +84,7 @@ public class Main extends ApplicationAdapter {
 		for(GameObject gameObject : gameObjects) {
 			gameObject.draw(batch);
 		}
-		font.draw(batch, "Hello Game", -220, -220);
+		font.draw(batch, "points: " + gameInput.getPoints(), -220, -220);
 		batch.end();
 	}
 

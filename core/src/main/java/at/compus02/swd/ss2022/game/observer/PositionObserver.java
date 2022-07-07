@@ -1,18 +1,28 @@
 package at.compus02.swd.ss2022.game.observer;
 
-import at.compus02.swd.ss2022.game.input.GameInput;
 
-public class MovementObserver implements GameObserver {
-    GameInput gameInput;
+public class PositionObserver implements GameObserver {
+    float x;
+    float y;
 
-    public MovementObserver(GameInput gameInput) {
-        this.gameInput = gameInput;
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
     }
 
     @Override
-    public void update() {
+    public void update(float x, float y) {
 
-        int keyCode = gameInput.getKeycode();
+        this.x = x;
+        this.y = y;
+
+
+
+
+        /*int keyCode = gameInput.getKeycode();
 
         if (keyCode == 21)
             System.out.println("Bingo moved left");
@@ -23,7 +33,7 @@ public class MovementObserver implements GameObserver {
         if (keyCode == 20)
             System.out.println("Bingo moved down");
         if (keyCode == 62)
-            System.out.println("Bingo barked");
+            System.out.println("Bingo barked");*/
 
 
     }

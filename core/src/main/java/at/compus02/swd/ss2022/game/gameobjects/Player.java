@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public abstract class Player implements GameObject, Movable {
     protected Texture image;
     protected Sprite sprite;
-    private float xCoordinate;
-    private float yCoordinate;
 
 
     @Override
@@ -19,8 +17,6 @@ public abstract class Player implements GameObject, Movable {
     @Override
     public void setPosition(float x, float y) {
         sprite.setPosition(x, y);
-        xCoordinate = x;
-        yCoordinate = y;
     }
 
     @Override
@@ -29,28 +25,34 @@ public abstract class Player implements GameObject, Movable {
     }
 
     public float getX() {
-        return xCoordinate;
+        return sprite.getX();
     }
 
     public float getY() {
-        return yCoordinate;
+        return sprite.getY();
     }
 
     @Override
-    public void moveUp() { this.setPosition(this.getX(), this.getY() + 30);}
+    public void moveUp() {
+        if (this.getY() <= 180)
+        this.setPosition(this.getX(), this.getY() + 30);
+    }
 
     @Override
     public void moveDown() {
-        this.setPosition(this.getX(), this.getY() - 30);
+        if (this.getY() >= -210)
+            this.setPosition(this.getX(), this.getY() - 30);
     }
 
     @Override
     public void moveRight() {
-        this.setPosition(this.getX() + 30, this.getY());
+        if (this.getX() <= 180)
+            this.setPosition(this.getX() + 30, this.getY());
     }
 
     @Override
     public void moveLeft() {
-        this.setPosition(this.getX() - 30, this.getY());
+        if (this.getX() >= -210)
+            this.setPosition(this.getX() - 30, this.getY());
     }
 }
