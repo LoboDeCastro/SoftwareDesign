@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class TileFactory extends Factory {
 
-    // überflüssig
+
     @Override
     public GameObject create(String object) {
         switch (object) {
